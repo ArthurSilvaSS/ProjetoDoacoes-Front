@@ -36,7 +36,7 @@ export class LoginComponent {
         // Armazena o token para uso futuro (ex: no localStorage)
         localStorage.setItem('authToken', response.token);
         // Redireciona para o painel do usuário (que criaremos depois)
-        // this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']);
         alert('Login realizado com sucesso! Token no console.');
       },
       error: (err) => {

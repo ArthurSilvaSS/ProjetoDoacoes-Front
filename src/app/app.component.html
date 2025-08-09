@@ -1,2 +1,10 @@
-<h1>Projeto de Doação</h1>
-<router-outlet></router-outlet>
+<header class="main-header">
+    <h1>Projeto de Doação</h1>
+    <nav *ngIf="authService.isAuthenticated()">
+        <button (click)="authService.logout()">Logout</button>
+    </nav>
+</header>
+
+<main>
+    <router-outlet></router-outlet>
+</main>
