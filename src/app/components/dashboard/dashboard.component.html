@@ -16,8 +16,14 @@
         <h3>Minhas Campanhas Criadas</h3>
         <ul *ngIf="myCampaigns.length > 0; else noCampaigns">
             <li *ngFor="let campaign of myCampaigns">
-                <strong>{{ campaign.titulo }}</strong> (Arrecadado: R$ {{ campaign.valorArrecadado }} / Meta: R$ {{
-                campaign.metaArrecadacao }})
+                <span>
+                    <strong>{{ campaign.titulo }}</strong> (Arrecadado: R$ {{ campaign.valorArrecadado }} / Meta: R$ {{
+                    campaign.metaArrecadacao }})
+                </span>
+                <div class="campaign-actions">
+                    <button (click)="onEdit(campaign.id)" class="btn-edit">Editar</button>
+                    <button (click)="onDelete(campaign.id)" class="btn-delete">Apagar</button>
+                </div>
             </li>
         </ul>
         <ng-template #noCampaigns>

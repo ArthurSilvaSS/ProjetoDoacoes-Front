@@ -27,7 +27,7 @@
             <input type="datetime-local" id="dataFim" [(ngModel)]="campaign.dataFim" name="dataFim">
         </div>
 
-        <button type="submit">Criar Campanha</button>
+        <button type="submit">{{ isEditMode ? 'Salvar Alterações' : 'Criar Campanha' }}</button>
 
         <div *ngIf="errorMessage" class="error-message">
             {{ errorMessage }}

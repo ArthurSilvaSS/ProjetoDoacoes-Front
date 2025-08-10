@@ -17,6 +17,11 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
+        path: 'dashboard/campaigns/edit/:id',
+        component: CampaignFormComponent,
+        canActivate: [authGuard]
+    },
+    {
         path: 'dashboard/campaigns/new',
         component: CampaignFormComponent,
         canActivate: [authGuard]

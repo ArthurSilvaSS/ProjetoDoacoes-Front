@@ -42,6 +42,14 @@ export class CampaignService {
     // O token JWT será adicionado automaticamente pelo AuthInterceptor
     return this.http.post<any>(this.apiUrl, campaignData);
   }
+
+  updateCampaign(id: number, campaignData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, campaignData);
+  }
+
+  deleteCampaign(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
   notifyCampaignsUpdated(): void {
     this.campaignsUpdated$.next();
   }
