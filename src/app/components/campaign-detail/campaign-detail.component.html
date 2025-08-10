@@ -1,0 +1,50 @@
+<div class="detail-container">
+    <div *ngIf="isLoading" class="loading">
+        <p>A carregar detalhes da campanha...</p>
+    </div>
+    <div *ngIf="error" class="error-message">
+        <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="campaign" class="campaign-content">
+        <h2>{{ campaign.titulo }}</h2>
+        <p class="description">{{ campaign.descricao }}</p>
+
+        <div class="progress-info">
+            <h3>Progresso da Arrecadação</h3>
+            <progress [value]="campaign.valorArrecadado" [max]="campaign.metaArrecadacao"></progress>
+            <p>
+                <strong>R$ {{ campaign.valorArrecadado | number:'1.2-2' }}</strong>
+                arrecadados de uma meta de
+                <strong>R$ {{ campaign.metaArrecadacao | number:'1.2-2' }}</strong>
+            </p>
+        </div>
+
+        <div *ngIf="authService.isAuthenticated()" class="donation-form">
+            <h3>Faça a sua contribuição!</h3>
+            <div class="form-group">
+                <label for="amount">Valor (R$):</label>
+                <input type="number" id="amount" [(ngModel)]="donationAmount" name="donationAmount" min="1"
+                    placeholder="Ex: 50.00">
+                <button (click)="onDonate()">Doar Agora</button>
+            </div>
+        </div>
+
+        <div *ngIf="!authService.isAuthenticated()" class="login-prompt">
+            <p><a [routerLink]="['/login']">Faça o login</a> para poder doar.</p>
+        </div>
+
+        <div class="donations-list">
+            <h3>Últimas Doações</h3>
+            <ul *ngIf="campaign.donations?.$values?.length > 0; else noDonations">
+                <li *ngFor="let donation of campaign.donations.$values">
+                    <strong>{{ donation.doador.nome }}</strong> doou <strong>R$ {{ donation.valor | number:'1.2-2'
+                        }}</strong>
+                </li>
+            </ul>
+            <ng-template #noDonations>
+                <p>Seja o primeiro a doar para esta campanha!</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,9 @@ export class CampaignService {
   get campaignsUpdatedObservable(): Observable<void> {
     return this.campaignsUpdated$.asObservable();
   }
+  getCampaignById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
 
   getMyCampaigns(): Observable<any[]> {
     const headers = new HttpHeaders({
@@ -24,7 +27,6 @@ export class CampaignService {
       'Expires': '0'
     });
 
-    // Aplicamos a mesma lógica de transformação aqui
     return this.http.get<any>(`${this.apiUrl}/my-campaigns`, { headers }).pipe(
       map(response => response.$values)
     );
@@ -37,7 +39,7 @@ export class CampaignService {
   }
 
   createCampaign(campaignData: any): Observable<any> {
-    // O token JWT será adicionado automaticamente pelo nosso AuthInterceptor
+    // O token JWT será adicionado automaticamente pelo AuthInterceptor
     return this.http.post<any>(this.apiUrl, campaignData);
   }
   notifyCampaignsUpdated(): void {

@@ -4,10 +4,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { authGuard } from './guards/auth.guard';
 import { CampaignFormComponent } from './components/campaign-form/campaign-form.component';
 import { HomeComponent } from './components/home/home.component';
+import { CampaignDetailComponent } from './components/campaign-detail/campaign-detail.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'campaigns/:id', component: CampaignDetailComponent },
     // ROTA PROTEGIDA:
     {
         path: 'dashboard',

@@ -1,23 +1,33 @@
-<div class="login-container">
-    <h2>Login</h2>
+<div class="login-page-wrapper">
 
-    <form (ngSubmit)="onSubmit()">
+    <div class="login-container">
+        <h1>Acesse sua conta</h1>
 
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" [(ngModel)]="credentials.email" name="email" required>
-        </div>
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" [(ngModel)]="credentials.email" name="email" required>
+            </div>
 
-        <div class="form-group">
-            <label for="password">Senha:</label>
-            <input type="password" id="password" [(ngModel)]="credentials.Senha" name="password" required>
-        </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" [(ngModel)]="credentials.Senha" name="senha" required>
+            </div>
 
-        <button type="submit">Entrar</button>
+            <a routerLink="/forgot-password" class="forgot-password-link">Esqueci minha senha</a>
+
+            <button type="submit">Logar</button>
+        </form>
+
+        <hr class="bottom-line">
+        <a routerLink="/register" class="create-account-link">Criar conta</a>
+
+        <footer>
+            <p>Copyright Arthur Silva - 2025</p>
+        </footer>
 
         <div *ngIf="errorMessage" class="error-message">
             {{ errorMessage }}
         </div>
-
-    </form>
+    </div>
 </div>
