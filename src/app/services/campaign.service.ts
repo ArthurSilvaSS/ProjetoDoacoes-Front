@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,17 +18,24 @@ export class CampaignService {
   }
 
   getMyCampaigns(): Observable<any[]> {
-    // Define cabeçalhos para instruir o navegador a NÃO usar a cache
-    console.log('%cDEBUG: CampaignService - Ponto 3: getMyCampaigns foi executado! A iniciar chamada HTTP...', 'color: cyan; font-weight: bold;');
     const headers = new HttpHeaders({
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Cache-Control': 'no-cache',
       'Pragma': 'no-cache',
       'Expires': '0'
     });
 
-    // Adiciona os cabeçalhos à nossa requisição GET
-    return this.http.get<any[]>(`${this.apiUrl}/my-campaigns`, { headers });
+    // Aplicamos a mesma lógica de transformação aqui
+    return this.http.get<any>(`${this.apiUrl}/my-campaigns`, { headers }).pipe(
+      map(response => response.$values)
+    );
   }
+
+  getPublicCampaigns(): Observable<any[]> {
+    return this.http.get<any>(this.apiUrl).pipe(
+      map(response => response.$values)
+    );
+  }
+
   createCampaign(campaignData: any): Observable<any> {
     // O token JWT será adicionado automaticamente pelo nosso AuthInterceptor
     return this.http.post<any>(this.apiUrl, campaignData);

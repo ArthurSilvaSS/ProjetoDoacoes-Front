@@ -1,7 +1,12 @@
 <header class="main-header">
-    <h1>Projeto de Doação</h1>
-    <nav *ngIf="authService.isAuthenticated()">
-        <button (click)="authService.logout()">Logout</button>
+    <h1><a routerLink="/home">Projeto de Doação</a></h1>
+    <nav>
+        <a routerLink="/home">Todas as Campanhas</a>
+
+        <a *ngIf="authService.isAuthenticated()" routerLink="/dashboard">Meu Painel</a>
+        <button *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</button>
+
+        <a *ngIf="!authService.isAuthenticated()" routerLink="/login" class="btn-login">Login</a>
     </nav>
 </header>
 

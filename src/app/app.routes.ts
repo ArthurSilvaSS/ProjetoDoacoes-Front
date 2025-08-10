@@ -3,8 +3,10 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { authGuard } from './guards/auth.guard';
 import { CampaignFormComponent } from './components/campaign-form/campaign-form.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
+    { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     // ROTA PROTEGIDA:
     {
@@ -17,6 +19,6 @@ export const routes: Routes = [
         component: CampaignFormComponent,
         canActivate: [authGuard]
     },
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: '**', redirectTo: '/dashboard' }
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '**', redirectTo: '/home' }
 ];
