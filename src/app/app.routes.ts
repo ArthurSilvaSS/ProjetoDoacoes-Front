@@ -6,12 +6,14 @@ import { CampaignFormComponent } from './components/campaign-form/campaign-form.
 import { HomeComponent } from './components/home/home.component';
 import { CampaignDetailComponent } from './components/campaign-detail/campaign-detail.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'campaigns/:id', component: CampaignDetailComponent },
+    { path: 'dashboard/settings', component: AccountSettingsComponent, canActivate: [authGuard] },
     // ROTA PROTEGIDA:
     {
         path: 'dashboard',

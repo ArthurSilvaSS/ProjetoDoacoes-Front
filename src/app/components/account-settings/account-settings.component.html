@@ -1,0 +1,57 @@
+<div class="settings-container">
+    <h2>Configurações da Conta</h2>
+
+    <section class="settings-section">
+        <h3>Atualizar Endereço de E-mail</h3>
+        <form (ngSubmit)="onUpdateProfile()">
+            <div class="form-group">
+                <label for="newEmail">Novo E-mail:</label>
+                <input type="email" id="newEmail" name="newEmail" [(ngModel)]="updateProfileData.newEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="currentPasswordProfile">Senha Atual (para confirmar):</label>
+                <input type="password" id="currentPasswordProfile" name="currentPasswordProfile"
+                    [(ngModel)]="updateProfileData.currentPassword" required>
+            </div>
+            <button type="submit">Atualizar E-mail</button>
+            <p *ngIf="updateProfileMessage" class="feedback-message">{{ updateProfileMessage }}</p>
+        </form>
+    </section>
+
+    <section class="settings-section">
+        <h3>Alterar Senha</h3>
+        <form (ngSubmit)="onChangePassword()">
+            <div class="form-group">
+                <label for="currentPassword">Senha Atual:</label>
+                <input type="password" id="currentPassword" name="currentPassword"
+                    [(ngModel)]="changePasswordData.currentPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Nova Senha:</label>
+                <input type="password" id="newPassword" name="newPassword" [(ngModel)]="changePasswordData.newPassword"
+                    required minlength="6">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Nova Senha:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword"
+                    required>
+            </div>
+            <button type="submit">Alterar Senha</button>
+            <p *ngIf="changePasswordMessage" class="feedback-message">{{ changePasswordMessage }}</p>
+        </form>
+    </section>
+
+    <section class="settings-section danger-zone">
+        <h3>Apagar Conta</h3>
+        <p>Esta ação é permanente e irá desativar a sua conta e todas as suas campanhas.</p>
+        <form (ngSubmit)="onDeleteAccount()">
+            <div class="form-group">
+                <label for="deletePassword">Senha (para confirmar):</label>
+                <input type="password" id="deletePassword" name="deletePassword"
+                    [(ngModel)]="deleteAccountData.password" required>
+            </div>
+            <button type="submit" class="btn-delete">Apagar Minha Conta Permanentemente</button>
+            <p *ngIf="deleteAccountError" class="feedback-message error">{{ deleteAccountError }}</p>
+        </form>
+    </section>
+</div>

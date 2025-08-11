@@ -7,6 +7,19 @@ import { Router } from '@angular/router';
 interface AuthResponse {
   token: string;
 }
+export interface UpdateProfileData {
+  newEmail: string;
+  currentPassword?: string; // a senha é opcional no modelo do front-end
+}
+
+export interface ChangePasswordData {
+  currentPassword?: string;
+  newPassword?: string;
+}
+
+export interface DeleteAccountData {
+  password?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +27,7 @@ interface AuthResponse {
 export class AuthService {
   // A URL da nossa API
   private apiUrl = 'https://localhost:7130/api/auth';
+  private accountApiUrl = 'https://localhost:7130/api/account';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -36,5 +50,19 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('authToken');
+  }
+  changePassword(data: ChangePasswordData): Observable<any> {
+    return this.http.post(`${this.accountApiUrl}/change-password`, data);
+  }
+
+  //Método para atualizar o perfil (email)
+  updateProfile(data: UpdateProfileData): Observable<any> {
+    return this.http.put(`${this.accountApiUrl}/update-profile`, data);
+  }
+
+  // Método para apagar a conta
+  deleteAccount(data: DeleteAccountData): Observable<any> {
+    // Usamos um POST como discutido, porque DELETE não deve ter corpo
+    return this.http.post(`${this.accountApiUrl}/delete-account`, data);
   }
 }
