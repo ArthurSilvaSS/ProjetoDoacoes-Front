@@ -5,10 +5,12 @@ import { authGuard } from './guards/auth.guard';
 import { CampaignFormComponent } from './components/campaign-form/campaign-form.component';
 import { HomeComponent } from './components/home/home.component';
 import { CampaignDetailComponent } from './components/campaign-detail/campaign-detail.component';
+import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
     { path: 'campaigns/:id', component: CampaignDetailComponent },
     // ROTA PROTEGIDA:
     {
