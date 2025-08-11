@@ -4,9 +4,13 @@
         <a routerLink="/home">Todas as Campanhas</a>
         <a *ngIf="authService.isAuthenticated()" routerLink="/dashboard">Meu Painel</a>
         <a *ngIf="authService.isAuthenticated()" routerLink="/dashboard/settings">Minha Conta</a>
+        <div *ngIf="authService.isAdmin()" class="admin-nav">
+            <span>| Admin: </span>
+            <a routerLink="/admin/users">Usuários</a>
+            <a routerLink="/admin/campaigns">Campanhas</a>
+        </div>
         <button *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</button>
         <a *ngIf="!authService.isAuthenticated()" routerLink="/login" class="btn-login">Login</a>
-        <a *ngIf="authService.isAdmin()" routerLink="/admin/users">Painel Admin</a>
     </nav>
 </header>
 <main><router-outlet></router-outlet></main>

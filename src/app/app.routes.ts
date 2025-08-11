@@ -9,6 +9,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { adminGuard } from './guards/admin.guard';
+import { AdminCampaignListComponent } from './components/admin-campaign-list/admin-campaign-list.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -17,22 +18,10 @@ export const routes: Routes = [
     { path: 'campaigns/:id', component: CampaignDetailComponent },
     { path: 'dashboard/settings', component: AccountSettingsComponent, canActivate: [authGuard] },
     { path: 'admin/users', component: UserListComponent, canActivate: [authGuard, adminGuard] },
-    // ROTA PROTEGIDA:
-    {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'dashboard/campaigns/edit/:id',
-        component: CampaignFormComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'dashboard/campaigns/new',
-        component: CampaignFormComponent,
-        canActivate: [authGuard]
-    },
+    { path: 'admin/campaigns', component: AdminCampaignListComponent, canActivate: [authGuard, adminGuard] },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+    { path: 'dashboard/campaigns/edit/:id', component: CampaignFormComponent, canActivate: [authGuard] },
+    { path: 'dashboard/campaigns/new', component: CampaignFormComponent, canActivate: [authGuard] },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: '**', redirectTo: '/home' }
 ];

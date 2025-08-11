@@ -29,4 +29,26 @@ export class UserListComponent implements OnInit {
       }
     });
   }
+  onDelete(userId: number, userName: string): void {
+    // Usamos o nome do usuário para uma confirmação mais clara
+    const confirmation = confirm(`Tem a certeza que deseja desativar o usuário "${userName}"? Suas campanhas também serão desativadas.`);
+
+    if (confirmation) {
+      this.adminService.deleteUser(userId).subscribe({
+        next: () => {
+          // Atualização Otimista: em vez de recarregar tudo,
+          // apenas atualizamos o status do usuário na nossa lista local.
+          const user = this.users.find(u => u.id === userId);
+          if (user) {
+            user.isDeleted = true;
+          }
+          alert('Usuário desativado com sucesso!');
+        },
+        error: (err) => {
+          alert('Ocorreu um erro ao desativar o usuário.');
+          console.error(err);
+        }
+      });
+    }
+  }
 }

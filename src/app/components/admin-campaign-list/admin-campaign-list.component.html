@@ -1,0 +1,29 @@
+<table *ngIf="!isLoading && !error">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Criador</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let campaign of campaigns" [class.deleted]="campaign.isDeleted">
+            <td>{{ campaign.id }}</td>
+            <td>{{ campaign.titulo }}</td>
+            <td>{{ campaign.criador?.nome }} (ID: {{ campaign.criador?.id }})</td>
+            <td>
+                <span [ngClass]="campaign.isDeleted ? 'status-inactive' : 'status-active'">
+                    {{ campaign.isDeleted ? 'Inativa' : 'Ativa' }}
+                </span>
+            </td>
+            <td>
+                <button (click)="onDelete(campaign.id, campaign.titulo)" class="btn-delete"
+                    [disabled]="campaign.isDeleted">
+                    Apagar
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

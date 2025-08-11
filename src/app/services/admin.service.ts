@@ -12,9 +12,20 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<any[]> {
-    // O interceptor adicionará o token do admin
     return this.http.get<any>(`${this.apiUrl}/users`).pipe(
-      map(response => response.$values)
+      map(response => response.$values.filter((item: any) => item.email !== undefined))
     );
+  }
+  deleteUser(id: number): Observable<object> {
+    return this.http.delete(`${this.apiUrl}/users/${id}`);
+  }
+  getAllCampaigns(): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrl}/campaigns`).pipe(
+      map(response => response.$values.filter((item: any) => item.titulo !== undefined)
+      )
+    );
+  }
+  deleteCampaign(id: number): Observable<object> {
+    return this.http.delete(`${this.apiUrl}/campaigns/${id}`);
   }
 }

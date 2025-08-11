@@ -16,10 +16,11 @@
                 <th>Email</th>
                 <th>Papel (Role)</th>
                 <th>Status</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let user of users" [class.deleted]="user.isDeleted">
                 <td>{{ user.id }}</td>
                 <td>{{ user.nome }}</td>
                 <td>{{ user.email }}</td>
@@ -28,6 +29,11 @@
                     <span [ngClass]="user.isDeleted ? 'status-inactive' : 'status-active'">
                         {{ user.isDeleted ? 'Inativo' : 'Ativo' }}
                     </span>
+                </td>
+                <td>
+                    <button (click)="onDelete(user.id, user.nome)" class="btn-delete" [disabled]="user.isDeleted">
+                        Apagar
+                    </button>
                 </td>
             </tr>
         </tbody>
