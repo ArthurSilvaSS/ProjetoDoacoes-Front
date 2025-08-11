@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 // Interface para tipar a resposta do token
 interface AuthResponse {
@@ -62,7 +63,26 @@ export class AuthService {
 
   // Método para apagar a conta
   deleteAccount(data: DeleteAccountData): Observable<any> {
-    // Usamos um POST como discutido, porque DELETE não deve ter corpo
+    //POST como discutido, porque DELETE não deve ter corpo
     return this.http.post(`${this.accountApiUrl}/delete-account`, data);
+  }
+  //Método para descodificar o token e obter o papel do usuário
+  getUserRole(): string | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      } catch (error) {
+        console.error("Erro ao descodificar o token", error);
+        return null;
+      }
+    }
+    return null;
+  }
+
+  //Método auxiliar para verificar se é admin
+  isAdmin(): boolean {
+    return this.getUserRole() === 'Admin';
   }
 }

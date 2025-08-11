@@ -1,0 +1,35 @@
+<div class="user-list-container">
+    <h2>Gestão de Usuários</h2>
+
+    <div *ngIf="isLoading">
+        <p>A carregar usuários...</p>
+    </div>
+    <div *ngIf="error">
+        <p class="error-message">{{ error }}</p>
+    </div>
+
+    <table *ngIf="!isLoading && !error">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Papel (Role)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{ user.id }}</td>
+                <td>{{ user.nome }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role === 1 ? 'Admin' : 'Comum' }}</td>
+                <td>
+                    <span [ngClass]="user.isDeleted ? 'status-inactive' : 'status-active'">
+                        {{ user.isDeleted ? 'Inativo' : 'Ativo' }}
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

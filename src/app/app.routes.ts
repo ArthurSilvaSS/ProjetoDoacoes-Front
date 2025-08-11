@@ -7,6 +7,8 @@ import { HomeComponent } from './components/home/home.component';
 import { CampaignDetailComponent } from './components/campaign-detail/campaign-detail.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -14,6 +16,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'campaigns/:id', component: CampaignDetailComponent },
     { path: 'dashboard/settings', component: AccountSettingsComponent, canActivate: [authGuard] },
+    { path: 'admin/users', component: UserListComponent, canActivate: [authGuard, adminGuard] },
     // ROTA PROTEGIDA:
     {
         path: 'dashboard',
