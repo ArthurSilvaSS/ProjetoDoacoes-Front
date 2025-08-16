@@ -16,6 +16,7 @@ export class CampaignFormComponent implements OnInit {
   errorMessage: string = '';
   isEditMode: boolean = false;
   private campaignId: number | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private campaignService: CampaignService,
@@ -36,26 +37,45 @@ export class CampaignFormComponent implements OnInit {
       });
     }
   }
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
 
   onSubmit(): void {
     this.errorMessage = '';
-    const payload = {
-      ...this.campaign,
-      dataInicio: new Date(this.campaign.dataInicio).toISOString(),
-      dataFim: this.campaign.dataFim ? new Date(this.campaign.dataFim).toISOString() : null
-    };
+
+
+    const formData = new FormData();
+    formData.append('Titulo', this.campaign.titulo);
+    formData.append('Descricao', this.campaign.descricao);
+    formData.append('MetaArrecadacao', this.campaign.metaArrecadacao.toString());
+
+    if (!this.isEditMode && this.campaign.dataInicio) {
+      formData.append('DataInicio', new Date(this.campaign.dataInicio).toISOString());
+    }
+    if (this.campaign.dataFim) {
+      formData.append('DataFim', new Date(this.campaign.dataFim).toISOString());
+    }
+
+    if (this.selectedFile) {
+      formData.append('ImagemArquivo', this.selectedFile, this.selectedFile.name);
+    }
 
     if (this.isEditMode && this.campaignId) {
-      // LÓGICA DE ATUALIZAÇÃO
-      this.campaignService.updateCampaign(this.campaignId, payload).subscribe({
+      // --- LÓGICA DE ATUALIZAÇÃO (AGORA IMPLEMENTADA) ---
+      this.campaignService.updateCampaign(this.campaignId, formData).subscribe({
         next: () => {
           alert('Campanha atualizada com sucesso!');
+          this.campaignService.notifyCampaignsUpdated(); // Notifica o dashboard para atualizar a lista
           this.router.navigate(['/dashboard']);
         },
         error: (err) => this.handleError(err)
       });
     } else {
-      this.campaignService.createCampaign(payload).subscribe({
+      this.campaignService.createCampaign(formData).subscribe({
         next: () => {
           alert('Campanha criada com sucesso!');
           this.campaignService.notifyCampaignsUpdated();
@@ -71,11 +91,11 @@ export class CampaignFormComponent implements OnInit {
     this.errorMessage = 'Ocorreu um erro ao salvar a campanha. Verifique os dados e tente novamente.';
   }
 
-  // Função auxiliar para formatar a data que vem da API
-  private formatDateForInput(dateString: string): string {
+
+  private formatDateForInput(dateString: string | null): string {
     if (!dateString) return '';
     const date = new Date(dateString);
-    // Remove os segundos e milissegundos para compatibilidade com o input
+
     date.setSeconds(0);
     date.setMilliseconds(0);
     return date.toISOString().slice(0, 16);
