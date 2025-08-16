@@ -3,10 +3,22 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CampaignService } from '../../services/campaign.service';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatCardModule,
+    MatButtonModule,
+    MatProgressBarModule,
+    MatPaginatorModule
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -15,23 +27,34 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = true;
   error: string | null = null;
 
+  totalCampaigns = 0;
+  pageSize = 6;
+  currentPage = 0;
+
+
   constructor(private campaignService: CampaignService) { }
 
   ngOnInit(): void {
-    console.log('%cDEBUG: HomeComponent - ngOnInit foi executado!', 'color: blue; font-weight: bold;');
+    this.loadCampaigns();
+  }
+  loadCampaigns(): void {
     this.isLoading = true;
-    this.error = null;
-    this.campaignService.getPublicCampaigns().subscribe({
+    this.campaignService.getPublicCampaigns(this.currentPage + 1, this.pageSize).subscribe({
       next: (data) => {
-        console.log('%cDEBUG: HomeComponent - SUCESSO! Dados recebidos:', 'color: lightblue;', data);
-        this.campaigns = data;
+        this.campaigns = data.items?.$values || data.items;
+        this.totalCampaigns = data.totalCount;
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('%cDEBUG: HomeComponent - ERRO!', 'color: red;', err);
         this.error = 'Não foi possível carregar as campanhas no momento. Tente novamente mais tarde.';
         this.isLoading = false;
       }
     });
+  }
+  // Método chamado quando o usuário muda de página
+  handlePageEvent(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadCampaigns();
   }
 }

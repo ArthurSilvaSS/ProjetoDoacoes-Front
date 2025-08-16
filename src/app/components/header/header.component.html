@@ -1,0 +1,19 @@
+<header class="main-header">
+    <div class="logo">
+        <a routerLink="/home">
+            <img ngSrc="assets/logo.png" priority width="500" height="500" alt="Logo do Projeto de Doação">
+        </a>
+    </div>
+
+    <nav class="main-nav">
+        @if (!authService.isAuthenticated()) {
+        <a routerLink="/register">Criar Conta</a>
+        <a routerLink="/login" class="btn-login">Login</a>
+        } @else {
+        <a routerLink="/home">Todas as Campanhas</a>
+        <a routerLink="/dashboard">Meu Painel</a>
+        <a routerLink="/dashboard/settings">Minha Conta</a>
+        <button (click)="authService.logout()" class="btn-logout">Logout</button>
+        }
+    </nav>
+</header>

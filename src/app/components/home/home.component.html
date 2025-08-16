@@ -1,26 +1,72 @@
 <div class="home-container">
+    <div class="home-container">
+
+        <section class="banner">
+            <h2>Ajude a Mudar Vidas, Uma Doação de Cada Vez</h2>
+        </section>
+
+        <div class="filter-bar">
+            <p>Filtros de busca (em breve)</p>
+        </div>
+
+        <div *ngIf="isLoading" class="loading">
+            <p>A carregar campanhas...</p>
+        </div>
+        <div *ngIf="error" class="error-message">
+            <p>{{ error }}</p>
+        </div>
+
+        <div *ngIf="!isLoading && !error">
+            <div class="campaign-grid">
+                <mat-card *ngFor="let campaign of campaigns" class="campaign-card">
+                </mat-card>
+            </div>
+
+            <mat-paginator [length]="totalCampaigns" [pageSize]="pageSize" [pageSizeOptions]="[6, 9, 12]"
+                (page)="handlePageEvent($event)">
+            </mat-paginator>
+        </div>
+    </div>
     <h2>Explore Nossas Campanhas</h2>
     <p>Cada doação faz a diferença. Encontre uma causa que toca o seu coração e contribua!</p>
 
     <div *ngIf="isLoading" class="loading">
         <p>A carregar campanhas...</p>
     </div>
-
     <div *ngIf="error" class="error-message">
         <p>{{ error }}</p>
     </div>
 
-    <div *ngIf="!isLoading && !error" class="campaign-list">
+    <div *ngIf="!isLoading && !error" class="campaign-grid">
         <div *ngIf="campaigns.length > 0; else noCampaigns">
-            <div *ngFor="let campaign of campaigns" class="campaign-card">
-                <h3>{{ campaign.titulo }}</h3>
-                <p class="card-description">{{ campaign.descricao }}</p>
-                <div class="card-progress">
-                    <span>Arrecadado: R$ {{ campaign.valorArrecadado | number:'1.2-2' }}</span>
-                    <span>Meta: R$ {{ campaign.metaArrecadacao | number:'1.2-2' }}</span>
-                </div>
-                <a [routerLink]="['/campaigns', campaign.id]" class="btn-details">Ver Detalhes e Doar</a>
-            </div>
+
+            <mat-card *ngFor="let campaign of campaigns" class="campaign-card">
+                <mat-card-header>
+                    <mat-card-title>{{ campaign.titulo }}</mat-card-title>
+                    <mat-card-subtitle>Criado por: {{ campaign.criador?.nome }}</mat-card-subtitle>
+                </mat-card-header>
+
+                <img mat-card-image src="https://placehold.co/600x400/0d6efd/FFFFFF?text=Doação"
+                    alt="Foto da campanha {{ campaign.titulo }}">
+
+                <mat-card-content>
+                    <p>{{ campaign.descricao | slice:0:100 }}...</p>
+                    <mat-progress-bar mode="determinate"
+                        [value]="(campaign.valorArrecadado / campaign.metaArrecadacao) * 100">
+                    </mat-progress-bar>
+                    <div class="progress-text">
+                        <span>R$ {{ campaign.valorArrecadado | number:'1.2-2' }}</span>
+                        <span>Meta: R$ {{ campaign.metaArrecadacao | number:'1.2-2' }}</span>
+                    </div>
+                </mat-card-content>
+
+                <mat-card-actions>
+                    <button mat-button color="primary" [routerLink]="['/campaigns', campaign.id]">MAIS DETALHES</button>
+                    <button mat-flat-button color="primary" [routerLink]="['/campaigns', campaign.id]">DOAR
+                        AGORA</button>
+                </mat-card-actions>
+            </mat-card>
+
         </div>
         <ng-template #noCampaigns>
             <p>Nenhuma campanha ativa no momento. Volte em breve!</p>

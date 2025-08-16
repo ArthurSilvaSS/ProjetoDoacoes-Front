@@ -32,10 +32,9 @@ export class CampaignService {
     );
   }
 
-  getPublicCampaigns(): Observable<any[]> {
-    return this.http.get<any>(this.apiUrl).pipe(
-      map(response => response.$values)
-    );
+  getPublicCampaigns(pageNumber: number, pageSize: number): Observable<any> {
+    // A resposta agora é um objeto { items: [], totalCount: 0 }
+    return this.http.get<any>(`${this.apiUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
   createCampaign(campaignData: any): Observable<any> {
