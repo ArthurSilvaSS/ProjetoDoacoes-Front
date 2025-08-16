@@ -1,36 +1,41 @@
-<div class="form-container">
-    <h2>Criar Nova Campanha</h2>
-    <form (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="titulo">Título da Campanha:</label>
-            <input type="text" id="titulo" [(ngModel)]="campaign.titulo" name="titulo" required>
-        </div>
+<div class="campaign-form-wrapper">
+    <div class="campaign-form-container">
 
-        <div class="form-group">
-            <label for="descricao">Descrição:</label>
-            <textarea id="descricao" [(ngModel)]="campaign.descricao" name="descricao" rows="4"></textarea>
-        </div>
+        <h2>{{ isEditMode ? 'Editar Campanha' : 'Criar Nova Campanha' }}</h2>
 
-        <div class="form-group">
-            <label for="meta">Meta de Arrecadação (R$):</label>
-            <input type="number" id="meta" [(ngModel)]="campaign.metaArrecadacao" name="metaArrecadacao" required
-                min="1">
-        </div>
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="titulo">Título da Campanha:</label>
+                <input type="text" id="titulo" [(ngModel)]="campaign.titulo" name="titulo" required>
+            </div>
 
-        <div class="form-group">
-            <label for="dataInicio">Data de Início:</label>
-            <input type="datetime-local" id="dataInicio" [(ngModel)]="campaign.dataInicio" name="dataInicio" required>
-        </div>
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" [(ngModel)]="campaign.descricao" name="descricao" rows="4" required></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="dataFim">Data de Fim (Opcional):</label>
-            <input type="datetime-local" id="dataFim" [(ngModel)]="campaign.dataFim" name="dataFim">
-        </div>
+            <div class="form-group">
+                <label for="meta">Meta de Arrecadação (R$):</label>
+                <input type="number" id="meta" [(ngModel)]="campaign.metaArrecadacao" name="metaArrecadacao" required
+                    min="1">
+            </div>
 
-        <button type="submit">{{ isEditMode ? 'Salvar Alterações' : 'Criar Campanha' }}</button>
+            <div class="form-group">
+                <label for="dataInicio">Data de Início:</label>
+                <input type="datetime-local" id="dataInicio" [(ngModel)]="campaign.dataInicio" name="dataInicio"
+                    required>
+            </div>
 
-        <div *ngIf="errorMessage" class="error-message">
-            {{ errorMessage }}
-        </div>
-    </form>
+            <div class="form-group">
+                <label for="dataFim">Data de Fim (Opcional):</label>
+                <input type="datetime-local" id="dataFim" [(ngModel)]="campaign.dataFim" name="dataFim">
+            </div>
+
+            <button type="submit">{{ isEditMode ? 'Salvar Alterações' : 'Criar Campanha' }}</button>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+        </form>
+    </div>
 </div>

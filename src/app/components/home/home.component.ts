@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { HeroComponent } from '../hero/hero.component';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,8 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
     MatCardModule,
     MatButtonModule,
     MatProgressBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    HeroComponent,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

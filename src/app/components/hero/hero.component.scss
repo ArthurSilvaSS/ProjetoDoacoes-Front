@@ -1,0 +1,56 @@
+.hero-container {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding: 4rem 2rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+}
+
+.hero-text {
+    flex: 1;
+
+    h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        line-height: 1.2;
+        color: #212529;
+    }
+
+    p {
+        font-size: 1.2rem;
+        color: #495057;
+        margin: 1.5rem 0;
+    }
+
+    button {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 20px;
+    }
+}
+
+.hero-image {
+    flex: 1;
+
+    img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+}
+
+// Media Query para Responsividade em telas menores (tablets e telemóveis)
+@media (max-width: 768px) {
+    .hero-container {
+        flex-direction: column; // Empilha os itens verticalmente
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+}
