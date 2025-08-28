@@ -1,0 +1,21 @@
+.campaign-card {
+    margin: 16px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.campaign-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 8px;
+}

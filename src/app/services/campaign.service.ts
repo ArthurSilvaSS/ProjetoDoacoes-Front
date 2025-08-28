@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface Campaign {
@@ -26,7 +26,16 @@ export interface PagedResponse {
 })
 export class CampaignService {
   private apiUrl = 'https://localhost:7130/api/campaigns';
-  private campaignsUpdated$ = new Subject<void>();
+
+  private campaignsSubject = new BehaviorSubject<Campaign[]>([]);
+  private totalCampaignsSubject = new BehaviorSubject<number>(0);
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
+
+  private campaignsUpdated$ = new BehaviorSubject<void>(undefined);
+
+  public campaigns$ = this.campaignsSubject.asObservable();
+  public totalCampaigns$ = this.totalCampaignsSubject.asObservable();
+  public isLoading$ = this.isLoadingSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -49,21 +58,14 @@ export class CampaignService {
     );
   }
 
-  getPublicCampaigns(pageNumber: number, pageSize: number, search: string = ''): Observable<PagedResponse> {
-    let params = new HttpParams()
-      .set('pageNumber', pageNumber.toString())
-      .set('pageSize', pageSize.toString());
-    if (search) {
-      params = params.set('search', search);
-    }
-    return this.http.get<any>(this.apiUrl, { params }).pipe(
-      map(response => {
-        // O serviço agora faz o "desembrulho" dos dados
-        const campaigns: Campaign[] = response.items?.$values || response.items;
-        const totalCount: number = response.totalCount;
-        return { items: campaigns, totalCount: totalCount };
-      })
-    );
+  getPublicCampaigns(page: number, pageSize: number, searchTerm: string): Observable<PagedResponse> {
+    return this.http.get<PagedResponse>(`/api/campaigns`, {
+      params: {
+        page: page.toString(),
+        pageSize: pageSize.toString(),
+        search: searchTerm
+      }
+    });
   }
 
   createCampaign(campaignData: FormData): Observable<Campaign> {
@@ -79,6 +81,43 @@ export class CampaignService {
   }
 
   notifyCampaignsUpdated(): void {
+    console.log('%c[CampaignService] Enviando SINAL de atualização...', 'color: purple; font-weight: bold;');
     this.campaignsUpdated$.next();
+  }
+
+  loadPublicCampaigns(pageNumber: number, pageSize: number, search: string = '', append: boolean = false): void {
+    this.isLoadingSubject.next(true);
+
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    this.http.get<any>(this.apiUrl, { params }).pipe(
+      map(response => {
+        const campaigns: Campaign[] = response.items?.$values || response.items || [];
+        const totalCount: number = response.totalCount || 0;
+        return { items: campaigns, totalCount: totalCount };
+      })
+    ).subscribe({
+      next: (data: PagedResponse) => {
+        if (append) {
+          const currentCampaigns = this.campaignsSubject.getValue();
+          this.campaignsSubject.next([...currentCampaigns, ...data.items]);
+        } else {
+          this.campaignsSubject.next(data.items);
+        }
+        console.log('%c[CampaignService] Novos dados recebidos da API. Atualizando BehaviorSubject.', 'color: brown;', data.items);
+        this.totalCampaignsSubject.next(data.totalCount);
+        this.isLoadingSubject.next(false);
+      },
+      error: (err) => {
+        console.error("Erro ao carregar campanhas", err);
+        this.isLoadingSubject.next(false);
+      }
+    });
   }
 }
