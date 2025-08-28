@@ -11,21 +11,19 @@
     </div>
 
     <div *ngIf="!(campaignService.isLoading$ | async)">
-        <div class="campaign-grid">
-            <div *ngIf="(campaignService.campaigns$ | async) as campaigns">
-                <div *ngIf="campaigns.length > 0; else noCampaigns">
+        <div *ngIf="(campaignService.campaigns$ | async) as campaigns">
 
-                    <app-campaign-card *ngFor="let campaign of campaigns" [campaign]="campaign"></app-campaign-card>
+            <ng-template #noCampaigns>
+                <p>Nenhuma campanha encontrada com os critérios de busca.</p>
+            </ng-template>
 
-                </div>
-                <ng-template #noCampaigns>
-                    <p>Nenhuma campanha encontrada com os critérios de busca.</p>
-                </ng-template>
+            <div *ngIf="campaigns.length > 0; else noCampaigns" class="campaigns-container">
+                <app-campaign-card *ngFor="let campaign of campaigns" [campaign]="campaign"></app-campaign-card>
             </div>
+
         </div>
 
         <mat-paginator [length]="(campaignService.totalCampaigns$ | async)" [pageSize]="pageSize"
-            [pageIndex]="currentPage" [pageSizeOptions]="[6, 9, 12]" (page)="handlePageEvent($event)">
+            [pageIndex]="currentPage" (page)="handlePageEvent($event)">
         </mat-paginator>
     </div>
-</div>

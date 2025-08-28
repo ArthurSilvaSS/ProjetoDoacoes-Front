@@ -2,15 +2,16 @@
     padding: 2rem;
 }
 
-.campaign-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
+.campaigns-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: flex-start;
     margin-top: 24px;
 }
 
-.campaign-card {
-    width: 100%;
+::ng-deep app-campaign-card {
+    flex-grow: 1;
+    flex-basis: 320px;
     max-width: 400px;
-    margin: auto;
 }
